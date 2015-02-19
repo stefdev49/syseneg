@@ -5,6 +5,7 @@ function reset() {
 	bRequest="";
 	payload="";
 	urbFunction="";
+	control="";
 }
 BEGIN {
 	reset();
@@ -53,10 +54,11 @@ BEGIN {
 	payload="1";
 }
 /^++++/ {
-	if(type=="URB_CONTROL" && data>0 && bRequest!="GET" && bRequest!="SET")
+	if(type=="URB_CONTROL" && (bRequest=="4" || bRequest=="12"))
 	{
 		if(payload=="")
 		{
+			control="1";
 			printf "URB %5d control  %s 0x%02x 0x%x 0x%02x len %5d ",cnt, bmRequestType, bRequest, wValue, wIndex, wLength;
 			if(direction=="OUT")
 			{
@@ -74,10 +76,16 @@ BEGIN {
 			{
 				printf " 0x%02x",binary[i];
 			}
+			control="";
 		}
 	}
 	else
 	{
+		# incomplete control blocks
+		if(control=="1")
+		{
+			printf "** incomplete **\n"
+		}
 		printf "URB %5d unprocessed",cnt
 	}
 	printf "\n"
