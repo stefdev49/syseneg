@@ -8,10 +8,16 @@ Roadmap:
 
 - record USB logs with wireshark
 - decode USB logs to extract commands
+	- transform pcap output to "parse.awk" format (*)
+	- decode read/write register function
+	- decode read/write data blocks
+	- decode low level firmware commands
 - add unit test programs to test USB commands
 - reach first light status with a low resolution non calibrated scan
 - add calibration
 - add resolutions
-- work out shaind calibration
+- work out shading calibration
 - reach calibrated scans status
-- turn tests progs in SANE backend
+- turn tests progs in a SANE backend
+
+(*) current state

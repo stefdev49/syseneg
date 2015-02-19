@@ -4,6 +4,7 @@ function reset() {
 	bmRequestType="";
 	bRequest="";
 	payload="";
+	urbFunction="";
 }
 BEGIN {
 	reset();
@@ -38,6 +39,9 @@ BEGIN {
 /USBPcap pseudoheader length:/ {
 	pseudo=strtonum($4)
 }
+/URB Function:/ {
+	urbFunction=$3;
+}
 /^[0-9a-f][0-9a-f][0-9a-f][0-9a-f]  / {
 	addr=strtonum("0x"$1);
 	for(i=2;i<NF && i<18;i++)
@@ -49,12 +53,11 @@ BEGIN {
 	payload="1";
 }
 /^++++/ {
-	if(bRequest=="4" && bmRequestType=="0x40" && type="URB_CONTROL")
+	if(type=="URB_CONTROL" && data>0 && bRequest!="GET" && bRequest!="SET")
 	{
 		if(payload=="")
 		{
-			#URB 00000 control 0x40 0x04 0x83 0x00 len 00000 
-			printf "URB %5d control  0x40 0x04 0x%02x 0x%02x len %5d ",cnt, and(wValue,255), wValue/256, wLength;
+			printf "URB %5d control  %s 0x%02x 0x%x 0x%02x len %5d ",cnt, bmRequestType, bRequest, wValue, wIndex, wLength;
 			if(direction=="OUT")
 			{
 				printf "wrote";

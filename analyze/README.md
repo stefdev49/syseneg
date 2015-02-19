@@ -16,7 +16,6 @@ Linux:
 ------
 
 	[wireshark 1.12.3](https://www.wireshark.org/)
-	groovy 2.4
 
 
 
@@ -25,7 +24,7 @@ Process:
 
 	1 - record a *.pcap file per USBpcap instructions
 	2 - tshark -V -x -r samples.pcap -S++++ >samples.hex
-	3 - scripts/decode samples.hex
+	3 - awk -f scripts/parse.awk samples.hex >samples.raw
 
 
 
@@ -55,5 +54,5 @@ RIPEMD160:           e0cf6c5c3cf46b2d78f4bd2e50729f5322ff4eec
 MD5:                 28ade7e37e847dd2732ced1bf584f378
 Strict time order:   True
 
-editcap, mergecap, dumpcap
+Other pcap tool: seditcap, mergecap, dumpcap
 	
