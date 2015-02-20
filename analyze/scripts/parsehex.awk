@@ -6,6 +6,9 @@ function reset() {
 	payload="";
 	urbFunction="";
 	control="";
+    	wValue="";
+    	wLength="";
+    	wIndex="";
 }
 BEGIN {
 	reset();
@@ -53,8 +56,17 @@ BEGIN {
 /CONTROL response data/ {
 	payload="1";
 }
+/IRP USBD_STATUS:/ {
+	status=$3
+}
 /^++++/ {
-	if(type=="URB_CONTROL" && (bRequest=="4" || bRequest=="12"))
+	# ACK
+	if(urbFunction="URB_FUNCTION_CONTROL_TRANSFER" && data==0)
+	{
+		printf "URB %5d ACK",cnt
+	}
+	# control transfers
+	else if(type=="URB_CONTROL" && (bRequest=="4" || bRequest=="12"))
 	{
 		if(payload=="")
 		{
@@ -88,6 +100,8 @@ BEGIN {
 		}
 		printf "URB %5d unprocessed",cnt
 	}
+
+	# for all packets
 	printf "\n"
 	reset();
 }
