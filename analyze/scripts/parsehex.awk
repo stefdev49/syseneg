@@ -61,9 +61,28 @@ BEGIN {
 }
 /^++++/ {
 	# ACK
-	if(urbFunction="URB_FUNCTION_CONTROL_TRANSFER" && data==0)
+	if(urbFunction=="URB_FUNCTION_CONTROL_TRANSFER" && data==0)
 	{
 		printf "URB %5d ACK",cnt
+	}
+	# data transfers
+	else if(urbFunction=="URB_FUNCTION_BULK_OR_INTERRUPT_TRANSFER")
+	{
+		if(direction=="OUT")
+		{
+			dir="out";
+			rw="wrote";
+		}
+		else
+		{
+			dir="in ";
+			rw="read ";
+		}
+		printf "URB %5d bulk_%s len %5d %s",cnt, dir, data, rw;
+		for(i=pseudo;i<pseudo+data;i++)
+		{
+			printf " 0x%02x",binary[i];
+		}
 	}
 	# control transfers
 	else if(type=="URB_CONTROL" && (bRequest=="4" || bRequest=="12"))
@@ -92,6 +111,7 @@ BEGIN {
 		}
 	}
 	else
+	# URB not yet decoded
 	{
 		# incomplete control blocks
 		if(control=="1")
