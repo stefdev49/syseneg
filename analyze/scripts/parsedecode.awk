@@ -1,3 +1,6 @@
+#
+# parse hex dump from tshark and decode simple ASIC operations
+#
 function reset() {
 	direction="";
 	type="";
@@ -19,6 +22,52 @@ function decodeControl() {
 	}
 	else
 	{
+		# decode registers operations
+		# write register
+		#URB  7977  control  0x40 0x04 0x183 0x00 len     2 wrote 0x2b 0x00 
+		#	=>write 12b,0
+		#URB  7977  control  0x40 0x04 0x83 0x00 len     2 wrote 0x2b 0x00
+	        #	=>write 2b,0
+		if(bmRequestType=="0x40" && bRequest==4 && data==2)
+		{
+		       	if(wValue==strtonum("0x183"))
+			{
+				printf "URB %5d writeReg(0x1%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				control="";
+				reset();
+				next;
+			}
+		       	if(wValue==strtonum("0x83"))
+			{
+				printf "URB %5d writeReg(0x%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				control="";
+				reset();
+				next;
+			}
+		} 
+		#URB     6  control  0xc0 0x04 0x18e 0x122 len     2 read  0x48 0x55 -> read(0x101)=0x48
+		#URB   250  control  0xc0 0x04 0x8e 0x222 len     2 read  0x92 0x55 ->read(0x02)=0x92
+		if(bmRequestType=="0xc0" && bRequest==4 && data==2)
+		{
+			reg=strtonum(wIndex)/256;
+		       	if(wValue==strtonum("0x18e"))
+			{
+				printf "URB %5d readReg(0x1%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				control="";
+				reset();
+				next;
+			}
+		       	if(wValue==strtonum("0x8e"))
+			{
+				printf "URB %5d readReg(0x%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				control="";
+				reset();
+				next;
+			}
+		}
+
+
+		# fall through case
 		printf "URB %5d control  %s 0x%02x 0x%x 0x%02x len %5d ",cnt, bmRequestType, bRequest, wValue, wIndex, wLength;
 		if(direction=="OUT")
 		{
@@ -108,7 +157,8 @@ BEGIN {
 	# ACK
 	if(urbFunction=="URB_FUNCTION_CONTROL_TRANSFER" && data==0)
 	{
-		printf "URB %5d ACK",cnt
+		#printf "URB %5d ACK",cnt
+		next;
 	}
 	# data transfers
 	else if(urbFunction=="URB_FUNCTION_BULK_OR_INTERRUPT_TRANSFER")
