@@ -32,14 +32,14 @@ function decodeControl() {
 		{
 		       	if(wValue==strtonum("0x183"))
 			{
-				printf "URB %5d writeReg(0x1%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				printf "URB %6d registerWrite(0x1%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
 				control="";
 				reset();
 				next;
 			}
 		       	if(wValue==strtonum("0x83"))
 			{
-				printf "URB %5d writeReg(0x%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				printf "URB %6d registerWrite(0x%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
 				control="";
 				reset();
 				next;
@@ -52,14 +52,14 @@ function decodeControl() {
 			reg=strtonum(wIndex)/256;
 		       	if(wValue==strtonum("0x18e"))
 			{
-				printf "URB %5d readReg(0x1%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				printf "URB %6d registerRead(0x1%02x)=0x%02x\n",cnt, reg, binary[pseudo]
 				control="";
 				reset();
 				next;
 			}
 		       	if(wValue==strtonum("0x8e"))
 			{
-				printf "URB %5d readReg(0x%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				printf "URB %6d registerRead(0x%02x)=0x%02x\n",cnt, reg, binary[pseudo]
 				control="";
 				reset();
 				next;
@@ -68,7 +68,7 @@ function decodeControl() {
 
 
 		# fall through case
-		printf "URB %5d control  %s 0x%02x 0x%x 0x%02x len %5d ",cnt, bmRequestType, bRequest, wValue, wIndex, wLength;
+		printf "URB %6d control  %s 0x%02x 0x%x 0x%02x len %5d ",cnt, bmRequestType, bRequest, wValue, wIndex, wLength;
 		if(direction=="OUT")
 		{
 			printf "wrote";
@@ -97,7 +97,7 @@ function decodeBulk() {
 		dir="in ";
 		rw="read ";
 	}
-	printf "URB %5d bulk_%s len %5d %s",cnt, dir, data, rw;
+	printf "URB %6d bulk_%s len %5d %s",cnt, dir, data, rw;
 	for(i=pseudo;i<pseudo+data;i++)
 	{
 		printf " 0x%02x",binary[i];
@@ -157,7 +157,7 @@ BEGIN {
 	# ACK
 	if(urbFunction=="URB_FUNCTION_CONTROL_TRANSFER" && data==0)
 	{
-		#printf "URB %5d ACK",cnt
+		#printf "URB %6d ACK",cnt
 		next;
 	}
 	# data transfers
@@ -178,7 +178,7 @@ BEGIN {
 		{
 			printf "** incomplete **\n"
 		}
-		printf "URB %5d unprocessed",cnt
+		printf "URB %6d unprocessed",cnt
 	}
 
 	# for all packets
