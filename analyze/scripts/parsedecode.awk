@@ -32,14 +32,14 @@ function decodeControl() {
 		{
 		       	if(wValue==strtonum("0x183"))
 			{
-				printf "URB %6d registerWrite(0x1%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				printf "registerWrite(0x1%02x,0x%02x)\n", binary[pseudo], binary[pseudo+1] 
 				control="";
 				reset();
 				next;
 			}
 		       	if(wValue==strtonum("0x83"))
 			{
-				printf "URB %6d registerWrite(0x%02x,0x%02x)\n",cnt, binary[pseudo], binary[pseudo+1] 
+				printf "registerWrite(0x%02x,0x%02x)\n", binary[pseudo], binary[pseudo+1] 
 				control="";
 				reset();
 				next;
@@ -52,14 +52,14 @@ function decodeControl() {
 			reg=strtonum(wIndex)/256;
 		       	if(wValue==strtonum("0x18e"))
 			{
-				printf "URB %6d registerRead(0x1%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				printf "registerRead(0x1%02x)=0x%02x\n", reg, binary[pseudo]
 				control="";
 				reset();
 				next;
 			}
 		       	if(wValue==strtonum("0x8e"))
 			{
-				printf "URB %6d registerRead(0x%02x)=0x%02x\n",cnt, reg, binary[pseudo]
+				printf "registerRead(0x%02x)=0x%02x\n", reg, binary[pseudo]
 				control="";
 				reset();
 				next;

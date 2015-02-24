@@ -9,6 +9,7 @@ tshark -r $1 -x -P -S++++ -V | awk -f parsedecode.awk >$1.tmp
 #
 for script in \
 bulk_write_data.awk \
+bulk_read_data.awk \
 ;
 do
 	echo "executing "$script"..."
