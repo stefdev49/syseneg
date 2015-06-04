@@ -30,7 +30,7 @@ BEGIN {
 	{
 		if(reg[i]>=0)
 		{
-			printf "genesys_write_register(%s,%s)\n",tidx[i],reg[i]
+			printf "registerWrite(%s,%s)\n",tidx[i],reg[i]
 		}
 	}
 	print "==================== SCAN STATUS END ============================="

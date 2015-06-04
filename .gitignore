@@ -3,3 +3,4 @@
 .gawkrc
 samples
 .project
+*.decode
