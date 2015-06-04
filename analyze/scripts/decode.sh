@@ -12,6 +12,7 @@ bulk_write_data.awk \
 bulk_read_data.awk \
 clock.awk \
 usb_speed.awk \
+scan.awk \
 ;
 do
 	echo "executing "$script"..."

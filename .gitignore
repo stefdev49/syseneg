@@ -1,1 +1,5 @@
 *.swp
+.gawk_history
+.gawkrc
+samples
+.project
