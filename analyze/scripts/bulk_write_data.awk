@@ -18,7 +18,7 @@ BEGIN {
 		{
 			str=$16 substr($15,3)
 			len=strtonum(str)
-			adr=$12
+			adr=$14 substr($13,3) substr($12,3) substr($11,3)
 		}
 		i++;
 		if(i==nb)
