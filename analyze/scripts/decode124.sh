@@ -13,6 +13,7 @@ bulk_read_data.awk \
 clock.awk \
 usb_speed.awk \
 scan.awk \
+slopes.awk \
 reg124.awk \
 ;
 do
