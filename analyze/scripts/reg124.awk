@@ -129,23 +129,23 @@ BEGIN {
 	done=1
 }
 /registerWrite\(0x76,0x/ {
-	ckmap=substr($0,31,2)
-	ckmap=substr(previous1,31,2)""ckmap
-	ckmap=substr(previous2,31,2)""ckmap
+	ckmap=substr($0,start+2,2)
+	ckmap=substr(previous1,start+2,2)""ckmap
+	ckmap=substr(previous2,start+2,2)""ckmap
 	print $0" => CK1MAP=0x"ckmap
 	done=1
 }
 /registerWrite\(0x79,0x/ {
-	ckmap=substr($0,31,2)
-	ckmap=substr(previous1,31,2)""ckmap
-	ckmap=substr(previous2,31,2)""ckmap
+	ckmap=substr($0,start+2,2)
+	ckmap=substr(previous1,start+2,2)""ckmap
+	ckmap=substr(previous2,start+2,2)""ckmap
 	print $0" => CK3MAP=0x"ckmap
 	done=1
 }
 /registerWrite\(0x7c,0x/ {
-	ckmap=substr($0,31,2)
-	ckmap=substr(previous1,31,2)""ckmap
-	ckmap=substr(previous2,31,2)""ckmap
+	ckmap=substr($0,start+2,2)
+	ckmap=substr(previous1,start+2,2)""ckmap
+	ckmap=substr(previous2,start+2,2)""ckmap
 	print $0" => CK4MAP=0x"ckmap
 	done=1
 }
