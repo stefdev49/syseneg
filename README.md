@@ -11,8 +11,9 @@ Roadmap:
 	- transform pcap output to "parse.awk" format
 	- decode read/write register function
 	- decode read/write data blocks
-	- decode low level firmware commands (*)
-	- gather scanner state at scan start motor
+	- decode low level firmware commands
+	- gather scanner state at scan start motor (*)
+	- extract scanned data
 - add unit test programs to test USB commands
 - reach first light status with a low resolution non calibrated scan
 - add calibration

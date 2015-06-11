@@ -33,3 +33,5 @@ Process:
 
 	1 - record a *.pcap file per USBpcap instructions
 	2 - run decode.sh in scripts/ subdirectory
+		- for gl124 based scanners, run decode124.sh which adds
+		  register content decoding for this ASIC
