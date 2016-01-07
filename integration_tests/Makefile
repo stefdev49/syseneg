@@ -1,49 +1,29 @@
-all: genesys
-really_all: regs843 gl843 regs846 gl646 gl846 gl841
+all: gl124
 
-XSANEDIR=../sane-backends-1.0.24
-SANEDIR=../sane-backends
+# path to the directory where sane-backends is compiled with :
+# CFLAGS="-DUNIT_TESTING -ggdb" ./configure \
+# --prefix=/usr \
+# --sysconfdir=/etc \
+# --libdir=/usr/lib64 \
+# --enable-parport-directio \
+# --enable-pnm-backend \
+# --enable-libusb_1_0 \
+# --enable-pthread \
+# --enable-locking \
+# --with-group=scanner \
+# --without-snmp
+# 
+SANEDIR=../../sane-backends
 SRCDIR=$(SANEDIR)/backend
 LIBDIR=$(SRCDIR)/.libs
 SANEI=$(SANEDIR)/sanei/.libs
 
-LIBS=-lusb -lpthread -lrt -lreadline -lncurses -lm
 LIBS=-lusb-1.0 -lpthread -lrt -lreadline -lncurses -lm
 
 .c.o:
 	gcc -DUNIT_TESTING -ggdb -I$(SRCDIR) -I$(SANEDIR)/include -c $<
 
-genesys: genesys.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-regs843: regs843.o $(LIBDIR)/libgenesys_la-genesys_gl843.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-regs846: regs846.o $(LIBDIR)/libgenesys_la-genesys_gl846.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
 gl124: gl124.o $(LIBDIR)/libgenesys_la-genesys_gl124.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-regdump124: regdump124.o $(LIBDIR)/libgenesys_la-genesys_gl124.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-gl646: gl646.o $(LIBDIR)/libgenesys_la-genesys_gl646.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-gl841: gl841.o $(LIBDIR)/libgenesys_la-genesys_gl841.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-gl843: gl843.o $(LIBDIR)/libgenesys_la-genesys_gl843.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-gl846: gl846.o $(LIBDIR)/libgenesys_la-genesys_gl846.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-gl847: gl847.o $(LIBDIR)/libgenesys_la-genesys_gl847.o $(LIBDIR)/libsane-genesys.so.1
-	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
-
-stats: stats.o $(LIBDIR)/libsane-genesys.so.1
 	gcc -ggdb -o $@ $< $(LIBDIR)/sane_strstatus.o -I$(SANEDIR)/include -L$(LIBDIR) -L$(SANEI) -L$(SANEDIR)/lib/.libs -lgenesys -lsanei -llib $(LIBS)
 
 # SANE binaries
@@ -63,6 +43,4 @@ $(LIBDIR)/libgenesys_la-genesys_gl124.o: $(COMMON) $(SRCDIR)/genesys_gl124.c $(S
 	(cd $(SRCDIR) && make)
 
 clean:
-	rm -f *.o regdump124 gl124 regs843 gl843 regs846 gl846 gl841 gl847 gl646
-
-# DO NOT DELETE
+	rm -f *.o gl124
