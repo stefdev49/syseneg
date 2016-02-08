@@ -1,5 +1,6 @@
 #
 # decodes raw register values into human readable format
+# handles gl124 register set
 #
 
 BEGIN {

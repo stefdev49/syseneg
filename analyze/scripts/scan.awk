@@ -23,7 +23,7 @@ BEGIN {
 	tidx[i]=rs;
 }
 # write to motor register 'commits' the scan
-/registerWrite\(0x0f,0x01\)/ {
+/registerWrite\(0x0f,0x/ {
 	printf "==================== SCAN %03d STATUS =================\n",scan
 	scan++
 	for(i=0;i<300;i++)
