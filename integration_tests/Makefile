@@ -12,7 +12,7 @@ all: gl124
 # --enable-locking \
 # --with-group=scanner \
 # --without-snmp
-# 
+#
 SANEDIR=../../sane-backends
 SRCDIR=$(SANEDIR)/backend
 LIBDIR=$(SRCDIR)/.libs

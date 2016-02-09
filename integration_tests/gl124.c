@@ -47,9 +47,9 @@ void dump_reg (Genesys_Register_Set * reg, int size)
     {
       r = sanei_genesys_get_address (reg, i);
       if (r)
-	{
-	  printf ("registerWrite(0x%02x,0x%02x)\n", i, r->value);
-	}
+        {
+          printf ("registerWrite(0x%02x,0x%02x)\n", i, r->value);
+        }
     }
 }
 
@@ -79,7 +79,7 @@ main (int argc, char **argv)
   struct timeval starttime;
   struct timeval endtime;
   char title[256];
-   
+
 
   /* backend init */
   status = sane_genesys_init (&vc, cb);
@@ -98,7 +98,7 @@ main (int argc, char **argv)
 
   session = (Genesys_Scanner *) handle;
   dev = session->dev;
- 
+
   if(argc>1)
     {
      steps=atoi(argv[1]);
@@ -106,22 +106,21 @@ main (int argc, char **argv)
   else
     {
      steps=256;
-    } 
- 
+    }
+
   status = gl124_feed(dev, 2000, SANE_FALSE);
-  feed=10;
 
   /* scan */
   resolution = 600;
- 
+
    /* width in cm */
    lines = 400;
    pixels = (dev->sensor.sensor_pixels*resolution)/dev->sensor.optical_res;
-   channels = 1;
+   channels = 3;
    scanmode=SCAN_MODE_COLOR;
    depth=8;
-   move=feed;
- 
+   move=203;
+
    bpl = channels * pixels * (depth/8);
    status = gl124_init_scan_regs (dev,
                                   dev->reg,
@@ -142,12 +141,12 @@ main (int argc, char **argv)
    r->value &= ~REG01_DVDSET;
    r = sanei_genesys_get_address (dev->reg, REG05);
    r->value &= ~REG05_GMMENB;
- 
-   /* override slope table */ 
+
+   /* override slope table */
    /* test(dev, steps); */
-   
+
    size = lines * bpl;
- 
+
    data = malloc (size);
    final = malloc (size);
    buffer = malloc (size);
@@ -162,19 +161,78 @@ main (int argc, char **argv)
    /**
     * override registers value just before use to test their effect on the scan
     */
-   /* 
+   /*
    sanei_genesys_read_register (dev, REG32, &value);
-   val |= REG32_GPIO13 | REG32_GPIO12 | REG32_GPIO11 | REG32_GPIO9;
+   value |= REG32_GPIO13 | REG32_GPIO12 | REG32_GPIO11 | REG32_GPIO9;
    sanei_genesys_write_register (dev, REG32, value);
    */
+   r = sanei_genesys_get_address (dev->reg, REG03);
+   r->value = 0x50;
+   r = sanei_genesys_get_address (dev->reg, REG04);
+   r->value = 0x03;
+   r = sanei_genesys_get_address (dev->reg, REG06);
+   r->value = 0x50;
+   /* no REG07 in set */
+   sanei_genesys_write_register (dev, 0x07, 0x00);
+   /* removed from set after setup !!
+   r = sanei_genesys_get_address (dev->reg, 0x0b);
+   r->value = 0x2a;
+   */
+   r = sanei_genesys_get_address (dev->reg, 0x16);
+   r->value = 0x11;
+   sanei_genesys_write_register (dev, REG0B, 0x2a);
+   r = sanei_genesys_get_address (dev->reg, 0x22);
+   r->value=0x14;
+
    /**
     * dump registers about to be sent to scanner in a format similar to those
     * from the usb log decoding scripts
     */
-   dump_reg(dev->reg, GENESYS_GL124_MAX_REGS);
+   // useless with debug messages dump_reg(dev->reg, GENESYS_GL124_MAX_REGS);
+
 
    /* write registers to the scanner then start scan */
    RIE (sanei_genesys_bulk_write_register (dev, dev->reg, GENESYS_GL124_MAX_REGS));
+
+   /* GPIO */
+   sanei_genesys_write_register(dev, 0x31,0x9f);
+   sanei_genesys_write_register(dev, 0x32,0x5b);
+   sanei_genesys_write_register(dev, 0x33,0x01);
+   sanei_genesys_write_register(dev, 0x34,0x80);
+   sanei_genesys_write_register(dev, 0x35,0x5f);
+   sanei_genesys_write_register(dev, 0x36,0x01);
+   sanei_genesys_write_register(dev, 0x38,0x00);
+
+   sanei_genesys_write_register(dev, 0x52,0x04);
+   sanei_genesys_write_register(dev, 0x53,0x06);
+   sanei_genesys_write_register(dev, 0x54,0x00);
+   sanei_genesys_write_register(dev, 0x55,0x02);
+
+   sanei_genesys_write_register(dev, 0x5a,0x3a);
+   sanei_genesys_write_register(dev, 0x5c,0x00);
+   sanei_genesys_write_register(dev, 0x5e,0x01);
+   sanei_genesys_write_register(dev, 0x6d,0x00);
+   sanei_genesys_write_register(dev, 0x70,0x1f);
+   sanei_genesys_write_register(dev, 0x71,0x1f);
+   sanei_genesys_write_register(dev, 0xc5,0x20);
+   sanei_genesys_write_register(dev, 0xc6,0xeb);
+   sanei_genesys_write_register(dev, 0xc7,0x20);
+   sanei_genesys_write_register(dev, 0xc8,0xeb);
+   sanei_genesys_write_register(dev, 0xc9,0x20);
+   sanei_genesys_write_register(dev, 0xca,0xeb);
+   sanei_genesys_write_register(dev, 0xcb,0x00);
+   sanei_genesys_write_register(dev, 0xcc,0x00);
+   sanei_genesys_write_register(dev, 0xcd,0x00);
+   sanei_genesys_write_register(dev, 0xce,0x00);
+
+   sanei_genesys_write_hregister(dev, 0x110,0x00);
+   sanei_genesys_write_hregister(dev, 0x111,0x00);
+   sanei_genesys_write_hregister(dev, 0x112,0x00);
+   sanei_genesys_write_hregister(dev, 0x113,0x00);
+   sanei_genesys_write_hregister(dev, 0x114,0x00);
+   sanei_genesys_write_hregister(dev, 0x115,0x00);
+
+   /* start scan */
    RIE (gl124_begin_scan(dev, dev->reg, SANE_TRUE));
    sanei_genesys_read_data_from_scanner (dev, data, size);
    RIE (gl124_end_scan (dev, dev->reg, SANE_TRUE));
