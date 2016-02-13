@@ -1,12 +1,8 @@
 #!/bin/bash
-export SANE_DIR=/home/stefdev/git/sane-backends-1.0.21
-export SANE_DIR=/home/stefdev/git/sane-backends-1.0.22
-export SANE_DIR=/home/stefdev/git/sane-backends-1.0.23
-export SANE_DIR=/home/stefdev/git/sane-backends-1.0.24
-export SANE_DIR=/home/stefdev/git/sane-backends
-#======================================================
-export SYSENEG=/home/stefdev/git/syseneg
-export SANE_DIR=/home/stefdev/git/sane-backends
+# =============================================
+# directory of developments sources
+export SANE_DIR=$HOME/git/sane-backends
+# =============================================
 export BIN_DIR=$SANE_DIR/frontend
 export SO_DIR=$SANE_DIR/backend/.libs
 export SANE_DEBUG_GENESYS=255
@@ -19,7 +15,6 @@ export SANE_DEBUG_GENESYS_GL124=255
 export LD_PRELOAD=$SO_DIR/libsane-genesys.so
 $BIN_DIR/scanimage -d genesys --clear-calibration --resolution 300 --mode Color 2>$0.log >$0.pnm
 # convert log messages back to decoding format
-awk -f $SYSENEG/analyze/scripts/relog.awk $0.log | awk -f $SYSENEG/analyze/scripts/scan.awk | awk -f $SYSENEG/analyze/scripts/reg124.awk >$0.decode
+awk -f ../analyze/scripts/relog.awk $0.log | awk -f ../analyze/scripts/scan.awk | awk -f ../analyze/scripts/reg124.awk >$0.decode
 # extracts individual scans register settings
-awk -f $SYSENEG/analyze/scripts/status.awk $0.decode
-
+awk -f ../analyze/scripts/status.awk $0.decode
