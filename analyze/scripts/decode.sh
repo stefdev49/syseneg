@@ -19,4 +19,8 @@ do
 	awk -f $script $1.tmp >$1.res
 	mv $1.res $1.tmp
 done
+# extract binary data
+echo "Extracting binary data ..."
+awk -f log2bin.awk $1.tmp
+# final output file name
 mv $1.tmp `basename $1 .pcap`.decode

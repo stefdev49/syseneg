@@ -79,6 +79,7 @@ main (int argc, char **argv)
   struct timeval starttime;
   struct timeval endtime;
   char title[256];
+  uint32_t maxwd;
 
 
   /* backend init */
@@ -189,6 +190,10 @@ main (int argc, char **argv)
     * from the usb log decoding scripts
     */
    // useless with debug messages dump_reg(dev->reg, GENESYS_GL124_MAX_REGS);
+
+   sanei_genesys_get_triple(dev->reg, REG_MAXWD, &maxwd);
+   maxwd/=2;
+   sanei_genesys_set_triple(dev->reg, REG_MAXWD, maxwd);
 
 
    /* write registers to the scanner then start scan */
