@@ -1,6 +1,6 @@
 # syseneg
 
-Reverse engineered SANE backend for genesys based scanners
+Reverse engineered tools for genesys SANE backend
 
 
 Roadmap:
@@ -12,8 +12,10 @@ Roadmap:
 	- decode read/write register function
 	- decode read/write data blocks
 	- decode low level firmware commands
-	- gather scanner state at scan start motor (*)
-	- extract scanned data
+	- gather scanner state at scan start motor
+	- extract scanned data (*) : currently no usable data is extracted
+		from logs. It remains to be found if it is a bug in decoding
+		scripts or USBPcap logging
 - add unit test programs to test USB commands
 - reach first light status with a low resolution non calibrated scan
 - add calibration
