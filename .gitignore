@@ -6,3 +6,4 @@ samples
 *.decode
 *.o
 tags
+*~
