@@ -16,8 +16,8 @@ bulk_read_data.awk \
 clock.awk \
 usb_speed.awk \
 gl124/gl124_fe_write_data.awk \
-scan.awk \
 slopes.awk \
+scan.awk \
 gl124/reg124.awk \
 ;
 do
