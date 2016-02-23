@@ -112,7 +112,7 @@ main (int argc, char **argv)
   status = gl124_feed(dev, 2000, SANE_FALSE);
 
   /* scan */
-  resolution = 600;
+  resolution = 300;
 
    /* width in cm */
    lines = 400;
@@ -167,39 +167,46 @@ main (int argc, char **argv)
    value |= REG32_GPIO13 | REG32_GPIO12 | REG32_GPIO11 | REG32_GPIO9;
    sanei_genesys_write_register (dev, REG32, value);
    */
+   /*
    r = sanei_genesys_get_address (dev->reg, REG03);
    r->value = 0x50;
    r = sanei_genesys_get_address (dev->reg, REG04);
    r->value = 0x03;
    r = sanei_genesys_get_address (dev->reg, REG06);
-   r->value = 0x50;
-   /* no REG07 in set */
+   r->value = 0x50;*/
+   /* no REG07 in set
    sanei_genesys_write_register (dev, 0x07, 0x00);
+    * */
    /* removed from set after setup !!
    r = sanei_genesys_get_address (dev->reg, 0x0b);
    r->value = 0x2a;
    */
+   /*
    r = sanei_genesys_get_address (dev->reg, 0x16);
    r->value = 0x11;
    sanei_genesys_write_register (dev, REG0B, 0x2a);
    r = sanei_genesys_get_address (dev->reg, 0x22);
    r->value=0x14;
-
+*/
    /**
     * dump registers about to be sent to scanner in a format similar to those
     * from the usb log decoding scripts
     */
    // useless with debug messages dump_reg(dev->reg, GENESYS_GL124_MAX_REGS);
-
+/*
    sanei_genesys_get_triple(dev->reg, REG_MAXWD, &maxwd);
    maxwd/=2;
    sanei_genesys_set_triple(dev->reg, REG_MAXWD, maxwd);
-
-
+*/
+   /*
+   sanei_genesys_set_triple(dev->reg,REG_STRPIXEL,0);
+   sanei_genesys_set_triple(dev->reg,REG_ENDPIXEL,0);
+   */
    /* write registers to the scanner then start scan */
    RIE (sanei_genesys_bulk_write_register (dev, dev->reg, GENESYS_GL124_MAX_REGS));
 
    /* GPIO */
+   /*
    sanei_genesys_write_register(dev, 0x31,0x9f);
    sanei_genesys_write_register(dev, 0x32,0x5b);
    sanei_genesys_write_register(dev, 0x33,0x01);
@@ -236,7 +243,7 @@ main (int argc, char **argv)
    sanei_genesys_write_hregister(dev, 0x113,0x00);
    sanei_genesys_write_hregister(dev, 0x114,0x00);
    sanei_genesys_write_hregister(dev, 0x115,0x00);
-
+*/
    /* start scan */
    RIE (gl124_begin_scan(dev, dev->reg, SANE_TRUE));
    sanei_genesys_read_data_from_scanner (dev, data, size);
