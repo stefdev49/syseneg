@@ -4,6 +4,6 @@ export SANE_DEBUG_GENESYS_GL124=255
 # run integration test
 ./gl124 >res.log 2>&1
 # convert log messages to decoding format
-awk -f ../analyze/scripts/relog.awk res.log | awk -f ../analyze/scripts/scan.awk | awk -f ../analyze/scripts/reg124.awk >res.decode
+awk -f ../analyze/scripts/relog.awk res.log | awk -f ../analyze/scripts/scan.awk | awk -f ../analyze/scripts/gl124/reg124.awk >res.decode
 # extract scan status
-awk -f status.awk res.decode
+awk -f ../analyze/scripts/status.awk res.decode
