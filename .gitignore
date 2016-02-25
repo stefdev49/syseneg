@@ -7,3 +7,11 @@ samples
 *.o
 tags
 *~
+#
+# ouput of run script
+#
+run/*.log
+run/*.pnm
+run/*.scan
+run/*.ref
+run/delta
