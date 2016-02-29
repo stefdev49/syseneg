@@ -2,7 +2,11 @@
 export SANE_DEBUG_GENESYS_LOW=255
 export SANE_DEBUG_GENESYS_GL124=255
 # run integration test
-./gl124 >res.log 2>&1
+for i in {0..255..16};
+do
+echo $i"..."
+./gl124 $i >res.log 2>&1
+done
 # convert log messages to decoding format
 awk -f ../analyze/scripts/relog.awk res.log | awk -f ../analyze/scripts/scan.awk | awk -f ../analyze/scripts/gl124/reg124.awk >res.decode
 # extract scan status

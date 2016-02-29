@@ -23,6 +23,12 @@
 	print "genesys_fe_write_data"$3$4
 	next
 }
+/write slope/ {
+	values=$6
+	gsub("=,","=",values)
+	print "write slope "strtonum($5)+1" "values
+	next
+}
 !/sanei_genesys_write_register/ {
 	print $0
 }

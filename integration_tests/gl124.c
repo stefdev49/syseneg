@@ -106,13 +106,13 @@ main (int argc, char **argv)
     }
   else
     {
-     steps=256;
+     steps=255;
     }
 
   status = gl124_feed(dev, 2000, SANE_FALSE);
 
   /* scan */
-  resolution = 300;
+  resolution = 600;
 
    /* width in cm */
    lines = 400;
@@ -120,7 +120,7 @@ main (int argc, char **argv)
    channels = 3;
    scanmode=SCAN_MODE_COLOR;
    depth=8;
-   move=203;
+   move=0;
 
    bpl = channels * pixels * (depth/8);
    status = gl124_init_scan_regs (dev,
@@ -244,6 +244,9 @@ main (int argc, char **argv)
    sanei_genesys_write_hregister(dev, 0x114,0x00);
    sanei_genesys_write_hregister(dev, 0x115,0x00);
 */
+   /* AFE reg01 experiment */
+   sanei_genesys_fe_write_data(dev, 0x01, steps);
+
    /* start scan */
    RIE (gl124_begin_scan(dev, dev->reg, SANE_TRUE));
    sanei_genesys_read_data_from_scanner (dev, data, size);

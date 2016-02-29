@@ -13,7 +13,7 @@ export SANE_DEBUG_GENESYS_GL843=255
 export SANE_DEBUG_GENESYS_GL847=255
 export SANE_DEBUG_GENESYS_GL124=255
 export LD_PRELOAD=$SO_DIR/libsane-genesys.so
-$BIN_DIR/scanimage -d genesys --clear-calibration --resolution 2400 --width 50.0 --height 50.0 --mode Color 2>$0.log >$0.pnm
+$BIN_DIR/scanimage -d genesys --clear-calibration --resolution 2400 --width 20.0 --height 20.0 -t 10.0 --mode Color 2>$0.log >$0.pnm
 # convert log messages back to decoding format
 awk -f ../analyze/scripts/relog.awk $0.log | awk -f ../analyze/scripts/scan.awk | awk -f ../analyze/scripts/gl124/reg124.awk >$0.decode
 # extracts individual scans register settings
